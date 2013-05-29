@@ -20,8 +20,6 @@ sub ScanDirectory{
 	my $basedir	= shift;
 	my $path	= shift;
 
-	my $searchdir	= "$basedir/$path";
-
 	opendir(DIR, "$basedir/$path") or die "Unable to open $searchdir:$!\n";
 	my @names = readdir(DIR) or die "Unable to read $searchdir:$!\n";
 	closedir(DIR);
@@ -47,7 +45,7 @@ sub ScanDirectory{
 our $dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecollector', Digest::MD5::md5_hex("this password protects nothing for real") ) || die "Could not connect to database: $DBI::errstr";
 
 foreach ( @ARGV ) {
-	ScanDirectory($_);
+	ScanDirectory($_, "");
 }
 
 $dbh->disconnect();
