@@ -20,8 +20,8 @@ sub ScanDirectory{
 	my $basedir	= shift;
 	my $path	= shift;
 
-	opendir(DIR, "$basedir/$path") or die "Unable to open $searchdir:$!\n";
-	my @names = readdir(DIR) or die "Unable to read $searchdir:$!\n";
+	opendir(DIR, "$basedir/$path") or die "Unable to open $basedir/$path:$!\n";
+	my @names = readdir(DIR) or die "Unable to read $basedir/$path:$!\n";
 	closedir(DIR);
 
 	foreach my $name (@names){
