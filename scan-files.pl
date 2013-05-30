@@ -7,6 +7,7 @@ use Digest::MD5;
 
 use DBI;
 
+our $dbh;
 
 sub push_db  {
 	my $basedir	= shift;
@@ -14,6 +15,7 @@ sub push_db  {
 	my $filename	= shift;
 
 	print "found file: $basedir\t/\t$path\t/\t$filename\n";
+	$dbh->do('INSERT INTO filecollector (basedir, path, filename) VALUES(?, ?, ?)', undef, ( $basedir, $path, $filename));
 
 }
 sub ScanDirectory{
@@ -52,7 +54,9 @@ sub ScanDirectory{
 
 # begin sub main
 
-our $dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecollector', Digest::MD5::md5_hex("this password protects nothing for real") ) || die "Could not connect to database: $DBI::errstr";
+$dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecollector', Digest::MD5::md5_hex("this password protects nothing for real") ) || die "Could not connect to database: $DBI::errstr";
+$dbh->do(qq{SET NAMES 'utf8';});
+$dbh->{'mysql_enable_utf8'} = 1;
 
 foreach ( @ARGV ) {
 	print "starting with $_\n";
