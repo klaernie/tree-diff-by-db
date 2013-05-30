@@ -13,15 +13,15 @@ sub push_db  {
 	my $path	= shift;
 	my $filename	= shift;
 
-#	print "$basedir\t/\t$path\t/\t$filename\n";
+	print "found file: $basedir\t/\t$path\t/\t$filename\n";
 
 }
 sub ScanDirectory{
 	my $basedir	= shift;
 	my $path	= shift;
 
-	opendir(DIR, "$basedir/$path") or die "Unable to open $basedir/$path:$!\n";
-	my @names = readdir(DIR) or die "Unable to read $basedir/$path:$!\n";
+	opendir(DIR, "$basedir/$path") or die "unable to open $basedir/$path:\n$!" ;
+	my @names = readdir(DIR) or die "unable to read $basedir/$path:\n$!\n";
 	closedir(DIR);
 
 	foreach my $name (@names){
@@ -33,8 +33,18 @@ sub ScanDirectory{
 			next;
 		}
 
-		if ( -d "$basedir/$path/$name"){
-			ScanDirectory("$basedir", "$path/$name");
+		my $dirname = "";
+		if ( $path eq "" ) {
+			$dirname = "$name";
+		} else {
+			$dirname = "$path/$name";
+		}
+
+		if ( -d "$basedir/$dirname"){
+			eval { ScanDirectory("$basedir", "$dirname"); };
+			if ( $@ ) {
+				print "Skipping directory $basedir/$dirname as I am $@\n";
+			}
 			next;
 		}
 	}
@@ -45,7 +55,12 @@ sub ScanDirectory{
 our $dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecollector', Digest::MD5::md5_hex("this password protects nothing for real") ) || die "Could not connect to database: $DBI::errstr";
 
 foreach ( @ARGV ) {
-	ScanDirectory($_, "");
+	print "starting with $_\n";
+	eval { ScanDirectory($_, ""); };
+	if ( $@ ) {
+		print "Skipping argument $_ as I am $@\n";
+		next;
+	}
 }
 
 $dbh->disconnect();
