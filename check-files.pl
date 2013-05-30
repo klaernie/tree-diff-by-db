@@ -17,7 +17,14 @@ my ( $hash_matched, $hash_unmatched ) = ( 0, 0);
 my $logfile = "defective files";
 my $orig_basepath = "";
 my $new_basepath = "";
-Getopt::Long::GetOptions ('logfile|log=s' => \$logfile, 'original-basepath=s' => \$orig_basepath, 'new-basepath=s' => \$new_basepath ) ;
+Getopt::Long::GetOptions ('logfile|log=s' => \$logfile, 'original-basepath=s' => \$orig_basepath, 'new-basepath=s' => \$new_basepath, "help|h|?" => sub { print <<EOT;
+usage:
+ --logfile FILE : specify an alternative location to write the logfile to instead of ./defective files
+ --original-basepath PATH : select which directory from the db to use (as there might be multiple runs with "scan-files DIR", the same DIR has to appear here. default is to scan for all files that are equipped with a hash.
+ --new-basepath PATH : replace the basepath that is stored in the db with this path, to check e.g. in another mountpoint
+EOT
+exit 0; }
+) ;
 
 sub HashFile {
 	 my $filename = shift;
