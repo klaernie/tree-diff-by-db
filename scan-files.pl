@@ -58,6 +58,15 @@ $dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecolle
 $dbh->do(qq{SET NAMES 'utf8';});
 $dbh->{'mysql_enable_utf8'} = 1;
 
+if ( $#ARGV < 1 ) {
+	print <<EOT;
+usage:
+  scan-files.pl DIR [ … DIR]
+
+  DIR: can be use multiple times, each dir is check for files, and each found file is written to the db.
+EOT
+
+}
 foreach ( @ARGV ) {
 	print "starting with $_\n";
 	eval { ScanDirectory($_, ""); };
