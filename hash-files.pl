@@ -17,7 +17,7 @@ sub HashFile {
 	 my $sha;
 	 $sha = Digest::SHA->new(512) or die "I could not create hash-object:$@";
 	 $sha->addfile($filename) or die "I could not read the file:$@";
-	 return $sha->hexdigest or die "I could not retrieve the digest";
+	 ( return $sha->hexdigest ) or die "I could not retrieve the digest";
 }
 
 # begin sub main
