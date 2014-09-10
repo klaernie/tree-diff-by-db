@@ -2,6 +2,8 @@
 
 use warnings;
 use strict;
+use utf8;
+use open ':std', ':encoding(UTF-8)';
 
 use Digest::MD5;
 

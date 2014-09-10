@@ -3,6 +3,7 @@
 use warnings;
 use strict;
 use utf8;
+use open ':std', ':encoding(UTF-8)';
 
 use Digest::MD5 qw(md5_hex);
 use Digest::SHA;
