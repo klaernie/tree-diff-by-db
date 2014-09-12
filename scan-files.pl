@@ -29,7 +29,7 @@ sub ScanDirectory{
 	closedir(DIR);
 
 	foreach my $name (@names){
-		next if ($name eq "."); 
+		next if ($name eq ".");
 		next if ($name eq "..");
 
 		if ( -f "$basedir/$path/$name" ){
