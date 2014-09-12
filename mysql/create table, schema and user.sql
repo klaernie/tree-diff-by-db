@@ -16,8 +16,11 @@ CREATE  TABLE IF NOT EXISTS `filecollector`.`filecollector` (
   `basedir` VARCHAR(4096) NOT NULL ,
   `path` VARCHAR(4096) NOT NULL ,
   `filename` VARCHAR(255) NOT NULL ,
+  `filenamehash` varchar(128) NULL,
   `hash` VARCHAR(128) NULL ,
-  PRIMARY KEY (`id`) )
+  PRIMARY KEY (`id`),
+  constraint filenamehashes unique ( filenamehash )
+ )
 ENGINE = InnoDB;
 
 
