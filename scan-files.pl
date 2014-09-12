@@ -73,7 +73,7 @@ $dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecolle
 $dbh->do(qq{SET NAMES 'utf8';});
 $dbh->{'mysql_enable_utf8'} = 1;
 
-if ( $#ARGV < 1 ) {
+if ( scalar @ARGV < 1 ) {
 	print <<EOT;
 usage:
   scan-files.pl DIR [ … DIR]
