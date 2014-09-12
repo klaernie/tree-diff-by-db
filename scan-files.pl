@@ -17,7 +17,7 @@ sub push_db  {
 	my $filename	= shift;
 
 	print "found file: $basedir\t/\t$path\t/\t$filename\n";
-	$dbh->do('INSERT INTO filecollector (basedir, path, filename) VALUES(?, ?, ?)', undef, ( $basedir, $path, $filename));
+	$dbh->do('INSERT IGNORE INTO filecollector (basedir, path, filename, filenamehash) VALUES(?, ?, ?, sha1( concat(basedir,"/",path,"/",filename)))', undef, ( $basedir, $path, $filename));
 
 }
 sub ScanDirectory{
