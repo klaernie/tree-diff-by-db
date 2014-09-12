@@ -32,6 +32,19 @@ sub ScanDirectory{
 		next if ($name eq ".");
 		next if ($name eq "..");
 
+		# if the item in question is a symlink
+		#  - pointing to a directory:
+		#      the contents are to be checked either in
+		#        - this basedir, but a different, non-symlink folder
+		#        - another basedir
+		#        - not at all
+		# - pointing to a regular file
+		#      the file is either
+		#        - in another basedir
+		#        - already in this basedir
+		#        - possibly already hashed
+		next if ( -l "$basedir/$path/$name" );
+
 		if ( -f "$basedir/$path/$name" ){
 			push_db( "$basedir", "$path","$name" );
 			next;
