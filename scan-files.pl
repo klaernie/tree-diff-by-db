@@ -15,10 +15,13 @@ sub push_db  {
 	my $basedir	= shift;
 	my $path	= shift;
 	my $filename	= shift;
+	my @fileinfo	= stat("$basedir/$path/$filename");
 
 	print "found file: $basedir\t/\t$path\t/\t$filename\n";
-	$dbh->do('INSERT IGNORE INTO filecollector (basedir, path, filename, filenamehash) VALUES(?, ?, ?, sha1( concat(basedir,"/",path,"/",filename)))', undef, ( $basedir, $path, $filename));
 
+	$dbh->do('INSERT IGNORE INTO filecollector (basedir, path, filename, created, accessed, changed, size,  filenamehash)
+		  VALUES(?, ?, ?, ?, ?, ?, ?, sha1( concat(basedir,"/",path,"/",filename)))', undef,
+		 ( $basedir, $path, $filename, $fileinfo[8], $fileinfo[9], $fileinfo[10], $fileinfo[7]));
 }
 sub ScanDirectory{
 	my $basedir	= shift;

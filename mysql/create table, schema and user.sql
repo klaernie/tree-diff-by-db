@@ -17,6 +17,10 @@ CREATE  TABLE IF NOT EXISTS `filecollector`.`filecollector` (
   `path` VARCHAR(4096) NOT NULL ,
   `filename` VARCHAR(255) NOT NULL ,
   `filenamehash` varchar(128) NULL,
+  `created` BIGINT NOT NULL,
+  `accessed` INT NOT NULL,
+  `changed` INT NOT NULL,
+  `size` BIGINT NOT NULL,
   `hash` VARCHAR(128) NULL ,
   PRIMARY KEY (`id`),
   constraint filenamehashes unique ( filenamehash )
