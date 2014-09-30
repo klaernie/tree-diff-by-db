@@ -2,10 +2,9 @@
 
 use warnings;
 use strict;
+
 use utf8;
 use open ':std', ':encoding(UTF-8)';
-
-use Digest::MD5;
 
 use DBI;
 
@@ -72,9 +71,22 @@ sub ScanDirectory{
 
 # begin sub main
 
-$dbh = DBI->connect('DBI:mysql:filecollector;host=hive.ak-online.be', 'filecollector', Digest::MD5::md5_hex("this password protects nothing for real") ) || die "Could not connect to database: $DBI::errstr";
-$dbh->do(qq{SET NAMES 'utf8';});
-$dbh->{'mysql_enable_utf8'} = 1;
+my $configfile="config.pl";
+{
+	package cfg;
+	do $configfile || die "could not read $configfile";
+}
+die "no DSN given in configfile"         unless ($cfg::DSN);
+die "no DB user given in configfile"     unless ($cfg::db_user);
+die "no DB password given in configfile" unless ($cfg::db_passwd);
+
+$dbh = DBI->connect($cfg::DSN, $cfg::db_user, $cfg::db_passwd) || die "Could not connect to database: $DBI::errstr";
+
+# if the DB type is mysql make sure UTF-8 works
+if ($cfg::DSN=~ m/mysql/) {
+	$dbh->do(qq{SET NAMES 'utf8';});
+	$dbh->{'mysql_enable_utf8'} = 1;
+}
 
 if ( scalar @ARGV < 1 ) {
 	print <<EOT;

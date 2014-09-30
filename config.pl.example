@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+#vim: set ft=perl:
+
+use Digest::MD5;
+
+$db_schema="filecollector";
+$db_host="hive.ak-online.be";
+$DSN="DBI:mysql:$db_schema;host=$db_host";
+
+$db_user="filecollector";
+$db_passwd=Digest::MD5::md5_hex("this password protects nothing for real");
