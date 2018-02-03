@@ -74,7 +74,7 @@ sub ScanDirectory{
 my $configfile="config.pl";
 {
 	package cfg;
-	do $configfile || die "could not read $configfile";
+	do "./$configfile" || die "could not read $configfile";
 }
 die "no DSN given in configfile"         unless ($cfg::DSN);
 die "no DB user given in configfile"     unless ($cfg::db_user);
